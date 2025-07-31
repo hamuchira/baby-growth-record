@@ -13,9 +13,17 @@
     <meta name="apple-mobile-web-app-title" content="はむぴよ">
     
     <!-- アイコン設定 -->
-    <link rel="icon" type="image/png" sizes="192x192" href="hamupiyo-icon.png">
-    <link rel="apple-touch-icon" sizes="192x192" href="hamupiyo-icon.png">
-    <link rel="shortcut icon" href="hamupiyo-icon.png">
+    <link rel="icon" type="image/png" href="hamupiyo-icon.png">
+    <link rel="apple-touch-icon" href="hamupiyo-icon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="hamupiyo-icon.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="hamupiyo-icon.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="hamupiyo-icon.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="hamupiyo-icon.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="hamupiyo-icon.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="hamupiyo-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="hamupiyo-icon.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="hamupiyo-icon.png">
+    <link rel="apple-touch-icon" sizes="57x57" href="hamupiyo-icon.png">
     
     <!-- Web App Manifest -->
     <link rel="manifest" href="manifest.json">
@@ -161,13 +169,21 @@
 
         // 母親の記録を削除
         function deleteMotherRecord(motherName) {
-            if (confirm(`${motherName}の記録を削除しますか？`)) {
+            if (confirm(`${motherName}のデータを\n本当に削除しますか？\n\nこの操作は元に戻せません。`)) {
+                const oldRecordsLength = state.records.length;
                 state.records = state.records.filter(record => record.motherName !== motherName);
-                if (state.selectedMother === motherName) {
-                    state.selectedMother = state.records.length > 0 ? state.records[0].motherName : '';
+                
+                if (state.records.length < oldRecordsLength) {
+                    // 削除が成功した場合
+                    if (state.selectedMother === motherName) {
+                        state.selectedMother = state.records.length > 0 ? state.records[0].motherName : '';
+                    }
+                    saveData(); // データ保存
+                    alert(`${motherName}のデータを削除しました。`);
+                    render();
+                } else {
+                    alert('削除に失敗しました。');
                 }
-                saveData(); // データ保存
-                render();
             }
         }
 
@@ -359,7 +375,7 @@
                                                 ${icons.edit}
                                             </button>
                                             <button
-                                                onclick="deleteMotherRecord('${state.selectedMother}')"
+                                                onclick="if(confirm('${state.selectedMother}のデータを\\n本当に削除しますか？\\n\\nこの操作は元に戻せません。')) { deleteMotherRecord('${state.selectedMother}'); }"
                                                 class="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                                                 title="記録を削除"
                                             >
