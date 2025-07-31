@@ -58,6 +58,36 @@
             editingMother: null
         };
 
+        // ローカルストレージからデータを読み込み
+        function loadData() {
+            try {
+                const savedRecords = localStorage.getItem('hamsterRecords');
+                if (savedRecords) {
+                    const parsedRecords = JSON.parse(savedRecords);
+                    if (Array.isArray(parsedRecords)) {
+                        state.records = parsedRecords;
+                        if (parsedRecords.length > 0) {
+                            state.selectedMother = parsedRecords[0].motherName;
+                        }
+                    }
+                }
+            } catch (error) {
+                console.error('データの読み込みでエラーが発生:', error);
+                state.records = [];
+            }
+        }
+
+        // データをローカルストレージに保存
+        function saveData() {
+            try {
+                if (state.records.length >= 0) {
+                    localStorage.setItem('hamsterRecords', JSON.stringify(state.records));
+                }
+            } catch (error) {
+                console.error('データの保存でエラーが発生:', error);
+            }
+        }
+
         // 日付を30日分生成
         function generateDays(birthDate) {
             const days = [];
@@ -196,6 +226,7 @@
                             state.records = importedData;
                             state.selectedMother = importedData.length > 0 ? importedData[0].motherName : '';
                         }
+                        saveData(); // データ保存
                         render();
                     } else {
                         alert('無効なファイル形式です');
@@ -487,8 +518,14 @@
             }
         }
 
+        // 初期化とレンダリング
+        function init() {
+            loadData(); // データを読み込み
+            render();
+        }
+
         // 初期レンダリング
-        render();
+        init();
     </script>
 </body>
 </html>
