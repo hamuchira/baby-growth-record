@@ -562,14 +562,37 @@
                                 onerror="this.style.display = 'none';"
                             />
                             <h3 class="text-xl font-semibold text-gray-600 mb-2">まだ記録がありません</h3>
-                            <p class="text-gray-500 mb-6">「追加」ボタンから最初の記録を作成してください</p>
-                            <button
-                                onclick="state.isAddingMother = true; render();"
-                                class="flex items-center gap-2 px-6 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors mx-auto"
-                            >
-                                ${icons.plus}
-                                最初の記録を作成
-                            </button>
+                            <p class="text-gray-500 mb-6">「追加」ボタンから最初の記録を作成するか、<br>バックアップファイルからデータを復元してください</p>
+                            
+                            <div class="flex flex-col gap-4 items-center">
+                                <button
+                                    onclick="state.isAddingMother = true; render();"
+                                    class="flex items-center gap-2 px-6 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
+                                >
+                                    ${icons.plus}
+                                    最初の記録を作成
+                                </button>
+                                
+                                <div class="text-gray-400 text-sm">または</div>
+                                
+                                <label class="flex items-center gap-2 px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors cursor-pointer">
+                                    ${icons.upload}
+                                    バックアップから復元
+                                    <input
+                                        type="file"
+                                        accept=".json"
+                                        onchange="restoreData(event)"
+                                        class="hidden"
+                                    />
+                                </label>
+                                
+                                <button
+                                    onclick="state.showBackupModal = true; render();"
+                                    class="text-gray-600 hover:text-gray-800 underline text-sm"
+                                >
+                                    データ復元方法を見る
+                                </button>
+                            </div>
                         </div>
                     ` : ''}
 
