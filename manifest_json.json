@@ -1,0 +1,26 @@
+{
+  "name": "はむぴよ - ハムスター赤ちゃん成長記録",
+  "short_name": "はむぴよ",
+  "description": "ハムスター赤ちゃんの成長記録アプリ",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#fef7ed",
+  "theme_color": "#f97316",
+  "orientation": "portrait-primary",
+  "scope": "./",
+  "icons": [
+    {
+      "src": "hamupiyo-icon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "hamupiyo-icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    }
+  ],
+  "categories": ["lifestyle", "utilities"]
+}
