@@ -125,10 +125,10 @@
             }
         }
 
-        // 日付を30日分生成
+        // 日付を30日分生成（日本時間）
         function generateDays(birthDate) {
             const days = [];
-            const birth = new Date(birthDate);
+            const birth = new Date(birthDate + 'T00:00:00');
             
             for (let i = 0; i <= 30; i++) {
                 const date = new Date(birth);
@@ -139,7 +139,8 @@
                     displayDate: date.toLocaleDateString('ja-JP', {
                         month: 'numeric',
                         day: 'numeric',
-                        weekday: 'short'
+                        weekday: 'short',
+                        timeZone: 'Asia/Tokyo'
                     })
                 });
             }
@@ -299,15 +300,22 @@
             event.target.value = '';
         }
 
-        // 今日の日付から生後何日目かを計算
+        // 今日の日付から生後何日目かを計算（日本時間）
         function getCurrentDay() {
             const currentRecord = getCurrentRecord();
             if (!currentRecord) return null;
             
             try {
-                const today = new Date();
-                const birth = new Date(currentRecord.birthDate);
-                const diffTime = today - birth;
+                // 日本時間で今日の日付を取得
+                const now = new Date();
+                const japanTime = new Date(now.toLocaleString("en-US", {timeZone: "Asia/Tokyo"}));
+                const birth = new Date(currentRecord.birthDate + 'T00:00:00');
+                
+                // 日付だけで比較するため、時間を0:00:00に設定
+                const today = new Date(japanTime.getFullYear(), japanTime.getMonth(), japanTime.getDate());
+                const birthDay = new Date(birth.getFullYear(), birth.getMonth(), birth.getDate());
+                
+                const diffTime = today - birthDay;
                 const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
                 
                 if (diffDays < 0 || diffDays > 30) return null;
